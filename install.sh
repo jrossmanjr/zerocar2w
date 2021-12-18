@@ -95,7 +95,7 @@ function install_the_things() {
   curl https://repo.jellyfin.org/debian/jellyfin_team.gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/jellyfin-archive-keyring.gpg >/dev/null
   echo "deb [signed-by=/usr/share/keyrings/jellyfin-archive-keyring.gpg arch=$( dpkg --print-architecture )] https://repo.jellyfin.org/debian $( lsb_release -c -s ) main" | sudo tee /etc/apt/sources.list.d/jellyfin.list
   $SUDO apt update
-  $SUDO apt install -y wget samba samba-common-bin apt-transport-https jellyfin
+  $SUDO apt install -y wget samba samba-common-bin apt-transport-https jellyfin exfat-utils
   echo "::: DONE installing all the things!"
 }
 
@@ -198,6 +198,8 @@ function finishing_touches() {
   echo "::: Finishing touches..."
   $SUDO chmod -R 777 /home/pi
   $SUDO sysctl -p
+  $SUDO usermod -aG video jellyfin
+  echo "gpu_mem=256" | sudo tee --append /boot/config.txt > /dev/null
   echo "::: Please restart the Pi and then connect to the hotspot :::"
   echo "::: Then go to https://10.0.0.1:8096 to setup your jellyfin server"
 }
