@@ -44,7 +44,7 @@ I use this as a portable server for the kids' iPads while in the car or flying o
         sudo apt update
         sudo apt upgrade -y
         sudo apt install git -y
-        git clone https://github.com/jrossmanjr/zerocar.git
+        git clone https://github.com/jrossmanjr/zerocar2w.git
         cd zerocar/
         sudo bash install.sh
         ```
