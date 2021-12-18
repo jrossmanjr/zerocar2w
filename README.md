@@ -46,7 +46,7 @@ I use this as a portable server for the kids' iPads while in the car or flying o
         sudo apt install git -y
         git clone https://github.com/jrossmanjr/zerocar.git
         cd zerocar/
-        sudo bash zerocar.sh
+        sudo bash install.sh
         ```
         - Fill in data for the prompts
 
