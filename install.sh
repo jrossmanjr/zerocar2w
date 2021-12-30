@@ -138,19 +138,21 @@ ctrl_interface=/var/run/hostapd
 ctrl_interface_group=0
 beacon_int=100
 auth_algs=1
+
 wpa_key_mgmt=WPA-PSK
-channel=6
+channel=1
 hw_mode=g
 interface=wlan0
 wpa=2
 wpa_pairwise=CCMP
 rsn_pairwise=CCMP
+
 country_code=US
+
 macaddr_acl=0
 ignore_broadcast_ssid=0
 ieee80211n=1
-wmm_enabled=1
-ht_capab=[HT40][SHORT-GI-20][DSSS_CCK-40]
+#ht_capab=[HT40][SHORT-GI-20][DSSS_CCK-40]
 
 ### SSID AND PASSWORD ###
 ' > /etc/hostapd/hostapd.conf
@@ -204,10 +206,36 @@ function finishing_touches() {
   echo "::: Then go to https://10.0.0.1:8096 to setup your jellyfin server"
 }
 
+function edit_minidlna() {
+  # editing minidlna
+  echo ":::"
+  echo -n "::: Editing minidlna"
+  $SUDO mkdir /home/pi/minidlna
+  $SUDO mkdir /home/pi/videos
+  $SUDO cp /etc/minidlna.conf /etc/minidlna.conf.bkp
+  $SUDO echo "user=root
+media_dir=V,/home/pi/videos/
+db_dir=/home/pi/minidlna/
+log_dir=/var/log
+port=8200
+inotify=yes
+enable_tivo=no
+strict_dlna=no
+album_art_names=Folder.jpg/folder.jpg/Thumb.jpg/thumb.jpg/movie.tbn/movie.jpg/Poster.jpg/poster.jpg
+notify_interval=900
+serial=12345678
+model_number=1
+root_container=B" > /etc/minidlna.conf
+  echo "model_name=$var1" | sudo tee --append /etc/minidlna.conf > /dev/null
+  echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+  $SUDO update-rc.d minidlna defaults
+  echo "::: DONE!"
+}
 
 delete_junk
 install_the_things
 edit_samba
+edit_minidlna
 instal_raspiap
 edit_hostapd
 edit_dhcpdconf
