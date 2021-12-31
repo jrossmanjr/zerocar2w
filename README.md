@@ -1,5 +1,5 @@
 # ZeroCar2w
-Used to deploy a RaspberryPi Jelllyfin server via a hotspot
+Used to deploy a RaspberryPi minidlna server via a hotspot
 
 I use this as a portable server for the kids' iPads while in the car or flying on trips.
 
@@ -58,8 +58,9 @@ I use this as a portable server for the kids' iPads while in the car or flying o
 - Access to RaspAP (RaspAP info: https://github.com/billz/raspap-webgui )  
     - Rebbot after instillation
     - Connect to the hotspot - go to ```10.0.0.1``` to access the RaspAP interface to change the network settings
-- Setup Jellyfin
-    - See this page for how to finish Jellyfin setup - https://pimylifeup.com/raspberry-pi-jellyfin/#firstsetup
+
+- Access Server
+    - Use VLC or another DLNA player to access the server when on the hotspot
 
 -------------------------------------------------------------------------------------------------------------------------
 Future
