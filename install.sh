@@ -189,7 +189,7 @@ function edit_dnsmasq() {
   # editing dnsmasq
   echo ":::"
   echo "::: Editing dnsmasq.conf"
-  echo "domain-needed
+  $SUDO echo "domain-needed
 interface=wlan0
 dhcp-range=10.0.0.2,10.0.0.245,255.255.255.0,24h" > /etc/dnsmasq.conf
   echo "::: DONE"
@@ -200,10 +200,9 @@ function finishing_touches() {
   echo "::: Finishing touches..."
   $SUDO chmod -R 777 /home/pi
   $SUDO sysctl -p
-  $SUDO usermod -aG video jellyfin
-  echo "gpu_mem=256" | sudo tee --append /boot/config.txt > /dev/null
-  echo "::: Please restart the Pi and then connect to the hotspot :::"
-  echo "::: Then go to https://10.0.0.1:8096 to setup your jellyfin server"
+  $SUDO echo "gpu_mem=16" | sudo tee --append /boot/config.txt > /dev/null
+  whiptail --msgbox --title "ZeroCar2w automated installer" "\n\nThe install process has finieshed. \nPlease restart the Pi and then connect to the hotspot. \nThen open VLC on your devices and go to network and you should see the server \n" ${r} ${c}
+}
 }
 
 function edit_minidlna() {
