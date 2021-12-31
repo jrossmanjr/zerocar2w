@@ -229,6 +229,7 @@ root_container=B" > /etc/minidlna.conf
   echo "model_name=$var1" | sudo tee --append /etc/minidlna.conf > /dev/null
   echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
   $SUDO update-rc.d minidlna defaults
+  $SUDO systemctl enable minidlna
   echo "::: DONE!"
 }
 
