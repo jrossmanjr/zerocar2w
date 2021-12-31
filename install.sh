@@ -211,6 +211,7 @@ function edit_minidlna() {
   echo -n "::: Editing minidlna"
   $SUDO mkdir /home/pi/minidlna
   $SUDO mkdir /home/pi/videos
+  $SUDO chmod -R 777 /home/pi
   $SUDO cp /etc/minidlna.conf /etc/minidlna.conf.bkp
   $SUDO echo "user=root
 media_dir=V,/home/pi/videos/
