@@ -198,6 +198,7 @@ function finishing_touches() {
   echo "::: Finishing touches..."
   $SUDO chmod -R 777 /home/pi
   $SUDO sysctl -p
+  $SUDO systemctl daemon-reload 
   whiptail --msgbox --title "ZeroCar2w automated installer" "\n\nThe install process has finieshed. \nPlease restart the Pi and then connect to the hotspot. \nThen open VLC on your devices and go to network and you should see the server \n" ${r} ${c}
 }
 
@@ -226,6 +227,7 @@ root_container=B" > /etc/minidlna.conf
   echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
   $SUDO update-rc.d minidlna defaults
   $SUDO systemctl enable minidlna
+  $SUDO usermod -aG root minidlna
   echo "::: DONE!"
 }
 
