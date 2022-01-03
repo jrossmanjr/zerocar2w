@@ -68,7 +68,7 @@ whiptail --msgbox --title "ZeroCar2w automated installer" "\nThis installer turn
 whiptail --msgbox --title "ZeroCar2w automated installer" "\n\nFirst things first... Lets set up some variables!" ${r} ${c}
 var1=$(whiptail --inputbox "Name the DLNA Server" ${r} ${c} ZeroCar2w --title "DLNA Name" 3>&1 1>&2 2>&3)
 var2=$(whiptail --inputbox "Name the WiFi Hotspot" ${r} ${c} ZeroCar2w --title "Wifi Name" 3>&1 1>&2 2>&3)
-var3=$(whiptail --passwordbox "Please enter a password for the WiFi hotspot" ${r} ${c} --title "HotSpot Password" 3>&1 1>&2 2>&3)
+var3=$(whiptail --passwordbox "Please enter a password for the WiFi hotspot (8 chars)" ${r} ${c} --title "HotSpot Password" 3>&1 1>&2 2>&3)
 whiptail --msgbox --title "ZeroCar2w automated installer" "\n\nOk all the data has been entered...The install will now complete!" ${r} ${c}
 
 #--------------------------------------------------------------------------------------------------------------------#
@@ -201,7 +201,6 @@ function finishing_touches() {
   $SUDO chmod -R 777 /home/pi
   $SUDO sysctl -p
   whiptail --msgbox --title "ZeroCar2w automated installer" "\n\nThe install process has finieshed. \nPlease restart the Pi and then connect to the hotspot. \nThen open VLC on your devices and go to network and you should see the server \n" ${r} ${c}
-}
 }
 
 function edit_minidlna() {
