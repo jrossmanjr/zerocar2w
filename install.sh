@@ -86,16 +86,14 @@ function delete_junk() {
 
 function install_the_things() {
   # installing samba server so you can connect and add files easily
-  # installing jellyfin to serve up your shit nicely
+  # installing minidlna to serve up your shit nicely
   echo ":::"
-  echo "::: Installing Samba & Jellyfin"
+  echo "::: Installing Samba & minidlna"
   $SUDO apt update 
   $SUDO apt install -y apt-transport-https
   $SUDO apt upgrade -y
-  curl https://repo.jellyfin.org/debian/jellyfin_team.gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/jellyfin-archive-keyring.gpg >/dev/null
-  echo "deb [signed-by=/usr/share/keyrings/jellyfin-archive-keyring.gpg arch=$( dpkg --print-architecture )] https://repo.jellyfin.org/debian $( lsb_release -c -s ) main" | sudo tee /etc/apt/sources.list.d/jellyfin.list
   $SUDO apt update
-  $SUDO apt install -y wget samba samba-common-bin apt-transport-https jellyfin exfat-utils
+  $SUDO apt install -y wget samba samba-common-bin minidlna exfat-utils
   echo "::: DONE installing all the things!"
 }
 
