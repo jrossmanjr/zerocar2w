@@ -196,6 +196,7 @@ dhcp-range=10.0.0.2,10.0.0.245,255.255.255.0,24h" > /etc/dnsmasq.conf
 function finishing_touches() {
   # restarting
   echo "::: Finishing touches..."
+  $SUDO rfkill unblock 0
   $SUDO chmod -R 777 /home/pi
   $SUDO sysctl -p
   $SUDO systemctl daemon-reload
