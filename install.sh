@@ -198,7 +198,12 @@ function finishing_touches() {
   echo "::: Finishing touches..."
   $SUDO chmod -R 777 /home/pi
   $SUDO sysctl -p
-  $SUDO systemctl daemon-reload 
+  $SUDO systemctl daemon-reload
+  # change the hostname
+  $SUDO echo $var1 > hostname
+  $SUDO cp hostname /etc/hostname
+  echo "127.0.0.1   $var1" | sudo tee --append /etc/hosts > /dev/null
+  #end notes
   whiptail --msgbox --title "ZeroCar2w automated installer" "\n\nThe install process has finieshed. \nPlease restart the Pi and then connect to the hotspot. \nThen open VLC on your devices and go to network and you should see the server \n" ${r} ${c}
 }
 
