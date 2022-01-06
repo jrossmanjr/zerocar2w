@@ -199,7 +199,6 @@ function finishing_touches() {
   $SUDO rfkill unblock 0
   $SUDO chmod -R 777 /home/pi
   $SUDO sysctl -p
-  $SUDO systemctl daemon-reload
   # change the hostname
   $SUDO echo $var1 > hostname
   $SUDO cp hostname /etc/hostname
@@ -232,6 +231,7 @@ root_container=B" > /etc/minidlna.conf
   echo "model_name=$var1" | sudo tee --append /etc/minidlna.conf > /dev/null
   echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
   $SUDO sed -i.bak "s+User=minidlna+User=root+g" /lib/systemd/system/minidlna.service
+  $SUDO systemctl daemon-reload
   $SUDO update-rc.d minidlna defaults
   $SUDO systemctl enable minidlna
   $SUDO usermod -aG root minidlna
