@@ -4,15 +4,12 @@
 # Use a RaspberryPi as a WiFi hotspot to serve up files
 #--------------------------------------------------------------------------------------------------------------------#
 # Shoutout to the folks making PiHole, Adafruit, & PIRATEBOX for showing me the way and essentially teaching me BASH
-
-# A lot of help came from ADAFRUIT:
-# https://learn.adafruit.com/setting-up-a-raspberry-pi-as-a-wifi-access-point/install-software
-
-# Thanks to SDESALAS who made a schweet node install script: https://github.com/sdesalas/node-pi-zero
-
+#
+# A lot of help came from ADAFRUIT -- https://learn.adafruit.com/setting-up-a-raspberry-pi-as-a-wifi-access-point/install-software
+#
 # Thanks to RaspberryConnect.com for some refinement of the setup code
-
-# RaspiAP by billz is the shit -- https://github.com/billz/raspap-webgui
+#
+# RaspiAP by billz is so awesome -- https://github.com/billz/raspap-webgui
 #--------------------------------------------------------------------------------------------------------------------#
 # MIT License
 #Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -24,6 +21,7 @@
 #OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 #OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #--------------------------------------------------------------------------------------------------------------------#
+
 echo ":::
 ███████╗███████╗██████╗  ██████╗  ██████╗ █████╗ ██████╗
 ╚══███╔╝██╔════╝██╔══██╗██╔═══██╗██╔════╝██╔══██╗██╔══██╗
@@ -68,7 +66,8 @@ whiptail --msgbox --title "ZeroCar2w automated installer" "\nThis installer turn
 whiptail --msgbox --title "ZeroCar2w automated installer" "\n\nFirst things first... Lets set up some variables!" ${r} ${c}
 var1=$(whiptail --inputbox "Name the DLNA Server" ${r} ${c} ZeroCar2w --title "DLNA Name" 3>&1 1>&2 2>&3)
 var2=$(whiptail --inputbox "Name the WiFi Hotspot" ${r} ${c} ZeroCar2w --title "Wifi Name" 3>&1 1>&2 2>&3)
-var3=$(whiptail --passwordbox "Please enter a password for the WiFi hotspot (8 chars)" ${r} ${c} --title "HotSpot Password" 3>&1 1>&2 2>&3)
+var3=$(whiptail --passwordbox "Please enter a password for the WiFi hotspot (8 character min!)" ${r} ${c} --title "HotSpot Password" 3>&1 1>&2 2>&3)
+var4=$(whiptail --inputbox  "Please enter a folder name to put your files in" ${r} ${c} --title "Folder Name for Media" 3>&1 1>&2 2>&3)
 whiptail --msgbox --title "ZeroCar2w automated installer" "\n\nOk all the data has been entered...The install will now complete!" ${r} ${c}
 
 #--------------------------------------------------------------------------------------------------------------------#
@@ -88,12 +87,12 @@ function install_the_things() {
   # installing samba server so you can connect and add files easily
   # installing minidlna to serve up your shit nicely
   echo ":::"
-  echo "::: Installing Samba & minidlna"
+  echo "::: Installing Samba, Minidlna & Making Directories"
+  $SUDO mkdir "$var4"
   $SUDO apt update 
   $SUDO apt install -y apt-transport-https
   $SUDO apt upgrade -y
-  $SUDO apt update
-  $SUDO apt install -y wget samba samba-common-bin minidlna exfat-utils
+  $SUDO apt install -y wget samba samba-common-bin exfat-utils exfat-fuse minidlna
   echo "::: DONE installing all the things!"
 }
 
@@ -187,7 +186,7 @@ function edit_dnsmasq() {
   # editing dnsmasq
   echo ":::"
   echo "::: Editing dnsmasq.conf"
-  $SUDO echo "domain-needed
+  echo "domain-needed
 interface=wlan0
 dhcp-range=10.0.0.2,10.0.0.245,255.255.255.0,24h" > /etc/dnsmasq.conf
   echo "::: DONE"
@@ -196,15 +195,9 @@ dhcp-range=10.0.0.2,10.0.0.245,255.255.255.0,24h" > /etc/dnsmasq.conf
 function finishing_touches() {
   # restarting
   echo "::: Finishing touches..."
-  $SUDO rfkill unblock 0
   $SUDO chmod -R 777 /home/pi
   $SUDO sysctl -p
-  # change the hostname
-  $SUDO echo $var1 > hostname
-  $SUDO cp hostname /etc/hostname
-  echo "127.0.0.1   $var1" | sudo tee --append /etc/hosts > /dev/null
-  #end notes
-  whiptail --msgbox --title "ZeroCar2w automated installer" "\n\nThe install process has finieshed. \nPlease restart the Pi and then connect to the hotspot. \nThen open VLC on your devices and go to network and you should see the server \n" ${r} ${c}
+  echo "::: Please restart the Pi and then connect to the hotspot :::"
 }
 
 function edit_minidlna() {
@@ -212,11 +205,8 @@ function edit_minidlna() {
   echo ":::"
   echo -n "::: Editing minidlna"
   $SUDO mkdir /home/pi/minidlna
-  $SUDO mkdir /home/pi/videos
-  $SUDO chmod -R 777 /home/pi
   $SUDO cp /etc/minidlna.conf /etc/minidlna.conf.bkp
   $SUDO echo "user=root
-media_dir=V,/home/pi/videos/
 db_dir=/home/pi/minidlna/
 log_dir=/var/log
 port=8200
@@ -229,12 +219,9 @@ serial=12345678
 model_number=1
 root_container=B" > /etc/minidlna.conf
   echo "model_name=$var1" | sudo tee --append /etc/minidlna.conf > /dev/null
+  echo "media_dir=V,$var4" | sudo tee --append /etc/minidlna.conf > /dev/null
   echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
-  $SUDO sed -i.bak "s+User=minidlna+User=root+g" /lib/systemd/system/minidlna.service
-  $SUDO systemctl daemon-reload
   $SUDO update-rc.d minidlna defaults
-  $SUDO systemctl enable minidlna
-  $SUDO usermod -aG root minidlna
   echo "::: DONE!"
 }
 
