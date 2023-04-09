@@ -123,7 +123,7 @@ function instal_raspiap() {
   echo "************************"
   echo "*** DO NOT RESTART!! ***"
   echo "************************"
-  wget -q https://git.io/voEUQ -O /tmp/raspap && bash /tmp/raspap
+  curl -sL https://install.raspap.com | bash -s -- --yes --openvpn 0 --adblock 0 --minwrite
 }
 
 function edit_hostapd() {
