@@ -196,6 +196,7 @@ function finishing_touches() {
   # restarting
   echo "::: Finishing touches..."
   $SUDO chmod -R 777 /home/pi
+  $SUDO chmod -R 777 /var/log
   $SUDO sysctl -p
   echo "::: Please restart the Pi and then connect to the hotspot :::"
 }
