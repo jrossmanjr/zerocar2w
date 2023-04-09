@@ -6,33 +6,9 @@ I use this as a portable server for the kids' iPads while in the car or flying o
 - Raspberry Pi Setup:
     - This was built for the Raspberry Pi Zero 2W
 
-    - "Burn" the Raspbian Lite image of your choice to the SD card with another computer
-        - Try Etcher by resin.io -- https://www.balena.io/etcher/
-
-    - To allow for SSH access: https://bit.ly/2VUi53V
-        - You can add a file to the boot partition called "ssh"
-       ```
-       touch ssh
-       ```
-        - OR...Create a blank txt file and save it to the boot partition as ssh
-
-    - Have the RPi auto connect to you home router on boot so you can ssh in
-        - Create a file in your text editor of choice called "wpa_supplicant.conf" with the below in the file
-        ```
-        ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-        update_config=1
-
-        network={
-            ssid="WIFI_ROUTER_NAME"
-            psk="WIFI_ROUTER_PASSWORD"
-            proto=RSN
-            key_mgmt=WPA-PSK
-            pairwise=CCMP
-            auth_alg=OPEN
-        }
-        ```
-        - Save the config file in the /boot partition
-
+    - "Burn" the Raspbian Lite image of your choice to the SD card with another computer using Raspberry Pi Imager
+        - https://www.raspberrypi.com/software/
+        
     - Install the SD card to the RPi and boot
 
     - SSH into the RPi through Putty or Terminal of choice https://bit.ly/2UzWyNA
