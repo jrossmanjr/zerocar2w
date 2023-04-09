@@ -220,7 +220,7 @@ model_number=1
 root_container=B" > /etc/minidlna.conf
   echo "model_name=$var1" | sudo tee --append /etc/minidlna.conf > /dev/null
   echo "media_dir=V,$var4" | sudo tee --append /etc/minidlna.conf > /dev/null
-  echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+  echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf > /dev/null
   $SUDO update-rc.d minidlna defaults
   echo "::: DONE!"
 }
